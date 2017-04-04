@@ -1,0 +1,5 @@
+Applying pep8 format in your code:
+`pip install yapf` 
+YAPF is a google owned code for formatting python code.
+Syntax: `yapf <python file>`
+
