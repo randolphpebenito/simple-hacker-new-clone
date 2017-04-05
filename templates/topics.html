@@ -1,5 +1,47 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
 <h1>ALL TOPICS!</h1>
-<h2>{{ topics }}</h2>
+<div class="row" style='margin-bottom: 20px'>
+    <div class="col-lg-3 col-md-6 col-lg-offset-9 col-md-offset-6">
+        <a href="{% url 'topic:create-topic'%}">
+            <button type="button" class="btn btn-lg btn-success"><i class="fa fa-plus-square fa-1x"></i> New Topic</button>
+        </a>
+    </div>
+</div> 
+
 {% for t in topics %}
-    <h3>{{ t }}</h3>
+    <h3>{{ t }} {{ t.total_vote_count }}</h3>
+	<span class="pull-right">
+		<a href="#">Up</a>
+		<a href="#">Down</a>
+	</span>
+{% empty %}
+	<h2>No Topics Yet</h2>
 {% endfor %}
+
+<!-- Pagination (Display if has other pages) -->
+{% if topics.has_other_pages %}
+  <ul class="pagination">
+    {% if topics.has_previous %}
+      <li><a href="?page={{ topics.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in topics.paginator.page_range %}
+      {% if topics.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if topics.has_next %}
+      <li><a href="?page={{ topics.next_page_number }}#tours_table">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+{% endblock %}
