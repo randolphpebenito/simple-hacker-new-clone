@@ -4,6 +4,9 @@ class Topic(object):
         self.topic = topic
         self.vote_count = vote_count
 
+    def __repr__(self):
+        return str(self.topic)
+
     @staticmethod
     def validate_positive_integer(value):
 	try:
