@@ -1,8 +1,10 @@
+import uuid 
 
 class Topic(object):
-    def __init__(self, topic=None, vote_count=0):
+    def __init__(self, topic=None, vote_score=0):
+        self.topic_id = str(uuid.uuid4())[:32].replace('-', '').lower()
         self.topic = topic
-        self.vote_count = vote_count
+        self.vote_score = vote_score
 
     def __repr__(self):
         return str(self.topic)
@@ -26,8 +28,8 @@ class Topic(object):
         """
         count = self.validate_positive_integer(count)
 
-        self.vote_count = self.vote_count + count
-        return self.vote_count
+        self.vote_score = self.vote_score + count
+        return self.vote_score
 
     def downvote(self, count):
         """
@@ -36,12 +38,13 @@ class Topic(object):
         """
         count = self.validate_positive_integer(count)
 
-        self.vote_count = self.vote_count - count
-        return self.vote_count
+        self.vote_score = self.vote_score - count
+        return self.vote_score
 
     @property
-    def total_vote_count(self):
+    def total_vote_score(self):
         """
             Simply returning the total vote . 
         """
-        return self.vote_count
+        return self.vote_score
+
