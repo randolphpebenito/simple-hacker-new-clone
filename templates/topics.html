@@ -1,8 +1,41 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% block javascript %}
+	<script>
+		function invokeVote(id, url) {
+            event.preventDefault();
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response){
+                    console.log(response);
+                    $("#score-" + id).html(response);
+                },
+                error: function(request, status, error){
+                    alert("ERROR! Development/Staging Error! Escalate to developer.");
+                }
+            });
+		}
+    
+		$(document).each(function(){
+			$(".upvote").click(function(e){
+				e.preventDefault();
+				var upvote_url = $(this).attr("data-href");
+                var id = $(this).data('id');
+				invokeVote(id, upvote_url);
+			});
+			$(".downvote").click(function(e){
+				e.preventDefault();
+				var downvote_url = $(this).attr("data-href");
+                var id = $(this).data('id');
+				invokeVote(id, downvote_url);
+			});
+		});
+
+	</script>
+{% endblock %}
 {% block content %}
-<h1>ALL TOPICS!</h1>
-<div class="row" style='margin-bottom: 20px'>
+<div class="row" style='margin-bottom: 20px; margin-top:40px'>
     <div class="col-lg-3 col-md-6 col-lg-offset-9 col-md-offset-6">
         <a href="{% url 'topic:create-topic'%}">
             <button type="button" class="btn btn-lg btn-success"><i class="fa fa-plus-square fa-1x"></i> New Topic</button>
@@ -11,13 +44,20 @@
 </div> 
 
 {% for t in topics %}
-    <h3>{{ t }} {{ t.total_vote_count }}</h3>
-	<span class="pull-right">
-		<a href="#">Up</a>
-		<a href="#">Down</a>
-	</span>
+<div class="row">
+    <div class="col-md-2">
+        <ul class="vote-topic" style="list-style-type: none;">
+            <li><a href="#" class="upvote" id="{{ t.topic_id }}" data-href="{% url "topic:upvote-topic" t.topic_id %}" data-id="{{ t.topic_id }}"><i class="fa fa-chevron-up"></i></a></li>
+            <li><span id="score-{{ t.topic_id }}" style="padding-left: 3px">{{ t.total_vote_score }}</span></li>
+            <li><a href="#" class="downvote" id="{{ t.topic_id }}" data-href="{% url "topic:downvote-topic" t.topic_id %}" data-id="{{ t.topic_id }}"><i class="fa fa-chevron-down"></i></a></li>
+        </ul>
+    </div>
+    <div class="col-md-10">
+        <h3>{{ t }}</h3>
+    </div>
+</div>
 {% empty %}
-	<h2>No Topics Yet</h2>
+	<h2>No Topics Yet.</h2>
 {% endfor %}
 
 <!-- Pagination (Display if has other pages) -->
