@@ -4,7 +4,7 @@ from operator import attrgetter
 #Django Built-In
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render
 
 #In-App
