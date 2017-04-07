@@ -6,7 +6,7 @@ It can easily be deployed to Heroku.
 Detailed steps on how to run/deploy [Django Reddit/Digg Clone Simple](https://docs.google.com/document/d/1D9ghvQvaLUNOf4zczapshSHXk3DaSyiEid555pgQtDA/edit#heading=h.55eevtewll6k).
 
 ## Demo
-Heroku: https://randolph-caroureddig-clone.herokuapp.com/
+Heroku: https://randolph-caroureddig-clone.herokuapp.com/   
 Python Anywhere: http://randolphcaroucodingexer.pythonanywhere.com/
 ## Quickstart
 
