@@ -136,4 +136,4 @@ STATICFILES_DIRS = (
 
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-ITEM_LIMIT_PER_PAGE = 3
+ITEM_LIMIT_PER_PAGE = 20
