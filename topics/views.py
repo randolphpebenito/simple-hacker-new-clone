@@ -1,6 +1,3 @@
-#Built-In
-from operator import attrgetter
-
 #Django Built-In
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -9,11 +6,11 @@ from django.shortcuts import redirect, render
 
 #In-App
 from .forms import CreateTopicForm
-from .topics import Topic
+from .topics import Topic, TopicList
 
 #Global Variable topics
 #TODO: Classify TopicList
-topics = []
+topics = TopicList()
 
 def paginate_list(list_obj, page_req_var):
     """
@@ -33,7 +30,7 @@ def home(request):
         List all topics sorted by total_vote_score descending (w/ pagination)
     """
     global topics
-    sorted_items = sorted(topics, key=attrgetter('total_vote_score'), reverse=True)
+    sorted_items = topics.sort_by('total_vote_score', reverse=True)
     topic_list = paginate_list(sorted_items, request.GET.get('page'))
     return render(request, "topics.html", {'topics': topic_list})
 
@@ -58,7 +55,7 @@ def upvote_topic(request, topic_id):
         returns total_vote_score if topic_id exists
         otherwise 404
     """
-    topic_obj = next((t for t in topics if t.topic_id == topic_id), None)
+    topic_obj = topics.get_obj_by_attr_or_none('topic_id', topic_id)
     if topic_obj is not None:
         topic_obj.upvote(1)
         return HttpResponse(topic_obj.total_vote_score)
@@ -71,7 +68,7 @@ def downvote_topic(request, topic_id):
         returns total_vote_score if topic_id exists
         otherwise 404
     """
-    topic_obj = next((t for t in topics if t.topic_id == topic_id), None)
+    topic_obj = topics.get_obj_by_attr_or_none('topic_id', topic_id)
     if topic_obj is not None:
         topic_obj.downvote(1)
         return HttpResponse(topic_obj.total_vote_score)
